@@ -23,6 +23,7 @@ import javax.persistence.*;
 public class StudentEntity {
 
     @Id
+    @GeneratedValue
     @Column(name = "ID", nullable = false)
     private Long id;
 
