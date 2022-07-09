@@ -1,6 +1,6 @@
 package com.example.springboothelperproject.controller;
 
-import com.example.springboothelperproject.model.Student;
+import com.example.springboothelperproject.dto.Student;
 import com.example.springboothelperproject.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

@@ -1,6 +1,6 @@
 package com.example.springboothelperproject.service;
 
-import com.example.springboothelperproject.model.Student;
+import com.example.springboothelperproject.dto.Student;
 
 import java.util.List;
 
@@ -12,26 +12,26 @@ import java.util.List;
 public interface StudentService {
 
     /**
-     * @param request info
-     * @return saved student info
+     * @param request student dto
+     * @return saved student dto
      */
     Student save(Student request);
 
     /**
      * @param id of the student
-     * @return student info
+     * @return student dto
      */
     Student get(Long id);
 
     /**
-     * @return list of all students
+     * @return list of all student dto
      */
     List<Student> getList();
 
     /**
      * @param id      of the student to update info
      * @param request info to update
-     * @return updated student info
+     * @return updated student dto
      */
     Student update(Long id, Student request);
 

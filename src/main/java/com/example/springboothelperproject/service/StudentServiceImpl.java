@@ -1,6 +1,6 @@
 package com.example.springboothelperproject.service;
 
-import com.example.springboothelperproject.model.Student;
+import com.example.springboothelperproject.dto.Student;
 import com.sun.jdi.request.InvalidRequestStateException;
 import org.springframework.stereotype.Service;
 
