@@ -5,7 +5,9 @@ import com.example.springboothelperproject.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author atiQue
@@ -17,15 +19,16 @@ import org.springframework.lang.NonNull;
 @Data
 public class Student {
 
-    @NonNull
+    @NotNull(message = "Student ID can't ne null.")
     private Long id;
 
-    @NonNull
+    @NotNull(message = "Student name can't be null.")
+    @NotEmpty(message = "Student name can't be empty.")
     private String name;
 
-    @NonNull
+    @NotNull
     private Gender gender;
 
-    @NonNull
+    @NotNull
     private Department department;
 }
