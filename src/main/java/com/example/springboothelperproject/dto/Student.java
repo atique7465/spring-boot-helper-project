@@ -1,4 +1,4 @@
-package com.example.springboothelperproject.model;
+package com.example.springboothelperproject.dto;
 
 import com.example.springboothelperproject.enums.Department;
 import com.example.springboothelperproject.enums.Gender;
