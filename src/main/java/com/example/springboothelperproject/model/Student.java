@@ -3,6 +3,7 @@ package com.example.springboothelperproject.model;
 import com.example.springboothelperproject.enums.Department;
 import com.example.springboothelperproject.enums.Gender;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class Student {
 
     @NotNull(message = "Student ID can't ne null.")
