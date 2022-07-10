@@ -24,29 +24,33 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentDao studentDao;
 
+    /**
+     * Step 01: check if the student already exist with same studentId. if exist throw exception.
+     * Step 02: if step 01 pass, we can proceed to save the student info. first map/convert the DTO to JPA entity
+     * Step 03: Save the entity by calling dao layer
+     * Step 04: map/convert saved entity to DTO and return
+     */
     @Override
     public Student save(Student request) {
 
-        //check if the student already exist. if exist throw exception.
-        //get entity from dao layer
+        //Step 01
         Optional<StudentEntity> existingEntity = studentDao.getByStudentId(request.getStudentId());
         if (existingEntity.isPresent()) {
             throw new IllegalArgumentException("Student already exist in database with studentId: " + request.getStudentId());
         }
 
-        //as student entity does not exist, we can save the info to database via JPA
-        //first covert student dto to jpa entity
+        //Step 02
         StudentEntity newEntity = getEntityFromDto(request);
 
-        //save the entity
+        //Step 03
         newEntity = studentDao.save(newEntity);
 
-        //convert the entity to dto and return
+        //Step 04
         return getDtoFromEntity(newEntity);
     }
 
     /**
-     * Entity to DTO Mapper
+     * Entity to DTO Mapper using Student builder
      */
     private Student getDtoFromEntity(StudentEntity entity) {
 
@@ -59,7 +63,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     /**
-     * DTO to Entity Mapper
+     * DTO to Entity Mapper using StudentEntity builder
      */
     private StudentEntity getEntityFromDto(Student request) {
 
@@ -71,45 +75,66 @@ public class StudentServiceImpl implements StudentService {
                 .build();
     }
 
+    /**
+     * Step 01: get student entity from dao layer
+     * Step 02: if entity is null, throw exception that the queried student not found in database
+     * Step 03: if step 02 pass, that means student found in database, map/convert found entity to DTO and return
+     */
     @Override
     public Student get(String studentId) {
 
-        //get student entity from dao layer
+        //Step 01
         Optional<StudentEntity> entity = studentDao.getByStudentId(studentId);
 
+        //Step 02
         if (entity.isEmpty()) {
             throw new PropertyNotFoundException("Student not found with studentId: " + studentId);
         }
 
-        //convert the entity to dto and return
+        //Step 03
         return getDtoFromEntity(entity.get());
     }
 
+    /**
+     * Step 01: get all student entities from dao layer
+     * Step 02: map/convert entities to DTO and save to result
+     * Step 03: return result
+     */
     @Override
     public List<Student> getList() {
 
         List<Student> result = new ArrayList<>();
 
-        //get student entities fro dao layer
+        //Step 01
         List<StudentEntity> entities = studentDao.getList();
 
-        //convert all entities to dto and store in result
+        //Step 02
         for (StudentEntity entity : entities) {
             result.add(getDtoFromEntity(entity));
         }
 
+        //Step 03
         return result;
     }
 
+    /**
+     * Step 01: if argument studentId is null, throw exception.
+     * Step 02: if requested studentId in update request dto already assigned to another student, throw exception as we can't use it further.
+     * Step 03: if step 01 & 02 pass, we can proceed to update the student info. first get the entity with studentId from dao layer, if not found throw exception.
+     * Step 04: if step 03 pass, get entity value from optional, set updated properties from DTO to entity.
+     * Step 05: Save the entity by calling dao layer.
+     * Step 06: map/convert saved entity to DTO and return.
+     */
     @Override
     public Student update(String studentId, Student request) {
 
-        //check request validity
+        //Step 01
         if (!StringUtils.hasLength(studentId)) {
             throw new InvalidRequestStateException("studentId can't be null or empty");
         }
 
-        //if requested studentId in update request dto already assigned to another student, we can't use it further.
+        //Step 02 [This step can also be done by catching unique constraint violation exception from DB layer,
+        //it's a design decision, for now we won't go that far, just a basic check to keep our logic simple]
         if (!studentId.equals(request.getStudentId())) {
             Optional<StudentEntity> requestedStudentIdEntity = studentDao.getByStudentId(request.getStudentId());
             if (requestedStudentIdEntity.isPresent()) {
@@ -117,39 +142,28 @@ public class StudentServiceImpl implements StudentService {
             }
         }
 
-        //request is valid, proceed to update
-        //get student entity from dao layer
+        //Step 03
         Optional<StudentEntity> existingEntity = studentDao.getByStudentId(studentId);
         if (existingEntity.isEmpty()) {
             throw new PropertyNotFoundException("Student not found to update with studentId: " + studentId);
         }
 
-        //get entity value from Optional
+        //Step 04
         StudentEntity entityToUpdate = existingEntity.get();
-
-        //as student exist in database, set updated values to the existing entity properties
         entityToUpdate.setStudentId(request.getStudentId());
         entityToUpdate.setName(request.getName());
         entityToUpdate.setGender(request.getGender());
         entityToUpdate.setDepartment(request.getDepartment());
 
-        //save the changes in database
+        //Step 05
         entityToUpdate = studentDao.save(entityToUpdate);
 
-        //convert the entity to dto and return
+        //Step 06
         return getDtoFromEntity(entityToUpdate);
     }
 
     @Override
     public void delete(String studentId) {
-
-        //get student entity from dao layer
-        Optional<StudentEntity> existingEntity = studentDao.getByStudentId(studentId);
-        if (existingEntity.isEmpty()) {
-            throw new PropertyNotFoundException("Student not found to delete with studentId: " + studentId);
-        }
-
-        //as student exist in database, delete it
         studentDao.deleteByStudentId(studentId);
     }
 }

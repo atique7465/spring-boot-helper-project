@@ -1,8 +1,9 @@
 {
 	"info": {
 		"_postman_id": "9dd49769-27ff-4639-9c0b-9a7d28e82531",
-		"name": "Spring Boot Helper Project",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"name": "Spring Boot Helper Project part 02",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10431930"
 	},
 	"item": [
 		{
@@ -12,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\" : 1,\r\n    \"name\" : \"Someone\",\r\n    \"gender\" : \"Male\",\r\n    \"department\" : \"CSE\"\r\n}",
+					"raw": "{\r\n    \"studentId\" : \"2022_001_001\",\r\n    \"name\" : \"Someone\",\r\n    \"gender\" : \"Female\",\r\n    \"department\" : \"CSE\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -42,7 +43,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\" : 1,\r\n    \"name\" : \"Someone Update\",\r\n    \"gender\" : \"Male\",\r\n    \"department\" : \"ME\"\r\n}",
+					"raw": "{\r\n    \"studentId\" : \"2022_001_001\",\r\n    \"name\" : \"Someone updated\",\r\n    \"gender\" : \"Male\",\r\n    \"department\" : \"CSE\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -50,7 +51,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8085/helper-project-1.0/api/v1/student/1",
+					"raw": "localhost:8085/helper-project-1.0/api/v1/student/2022_001_001",
 					"host": [
 						"localhost"
 					],
@@ -60,7 +61,7 @@
 						"api",
 						"v1",
 						"student",
-						"1"
+						"2022_001_001"
 					]
 				}
 			},
@@ -72,7 +73,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8085/helper-project-1.0/api/v1/student/1",
+					"raw": "localhost:8085/helper-project-1.0/api/v1/student/2022_001_001",
 					"host": [
 						"localhost"
 					],
@@ -82,7 +83,7 @@
 						"api",
 						"v1",
 						"student",
-						"1"
+						"2022_001_001"
 					]
 				}
 			},
@@ -94,7 +95,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8085/helper-project-1.0/api/v1/student/1",
+					"raw": "localhost:8085/helper-project-1.0/api/v1/student/2022_001_001",
 					"host": [
 						"localhost"
 					],
@@ -104,7 +105,7 @@
 						"api",
 						"v1",
 						"student",
-						"1"
+						"2022_001_001"
 					]
 				}
 			},
