@@ -25,10 +25,12 @@ public class StudentServiceImpl implements StudentService {
     private StudentDao studentDao;
 
     /**
-     * Step 01: check if the student already exist with same studentId. if exist throw exception.
-     * Step 02: if step 01 pass, we can proceed to save the student info. first map/convert the DTO to JPA entity
-     * Step 03: Save the entity by calling dao layer
-     * Step 04: map/convert saved entity to DTO and return
+     * <b><i>[Steps to help you, it's not recommended to write that much of unnecessary details in method document/comment]</i></b><br/><br/>
+     *
+     * <b>Step 01:</b> check if the student already exist with same studentId. if exist throw exception.<br/>
+     * <b>Step 02:</b> if step 01 pass, we can proceed to save the student info. first map/convert the DTO to JPA entity<br/>
+     * <b>Step 03:</b> Save the entity by calling dao layer<br/>
+     * <b>Step 04:</b> map/convert saved entity to DTO and return
      */
     @Override
     public Student save(Student request) {
@@ -76,9 +78,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     /**
-     * Step 01: get student entity from dao layer
-     * Step 02: if entity is null, throw exception that the queried student not found in database
-     * Step 03: if step 02 pass, that means student found in database, map/convert found entity to DTO and return
+     * <b><i>[Steps to help you, it's not recommended to write that much of unnecessary details in method document/comment]</i></b><br/><br/>
+     *
+     * <b>Step 01:</b> get student entity from dao layer<br/>
+     * <b>Step 02:</b> if entity is null, throw exception that the queried student not found in database<br/>
+     * <b>Step 03:</b> if step 02 pass, that means student found in database, map/convert found entity to DTO and return
      */
     @Override
     public Student get(String studentId) {
@@ -96,9 +100,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     /**
-     * Step 01: get all student entities from dao layer
-     * Step 02: map/convert entities to DTO and save to result
-     * Step 03: return result
+     * <b><i>[Steps to help you, it's not recommended to write that much of unnecessary details in method document/comment]</i></b><br/><br/>
+     *
+     * <b>Step 01:</b> get all student entities from dao layer<br/>
+     * <b>Step 02:</b> map/convert entities to DTO and save to result<br/>
+     * <b>Step 03:</b> return result
      */
     @Override
     public List<Student> getList() {
@@ -118,12 +124,14 @@ public class StudentServiceImpl implements StudentService {
     }
 
     /**
-     * Step 01: if argument studentId is null, throw exception.
-     * Step 02: if requested studentId in update request dto already assigned to another student, throw exception as we can't use it further.
-     * Step 03: if step 01 & 02 pass, we can proceed to update the student info. first get the entity with studentId from dao layer, if not found throw exception.
-     * Step 04: if step 03 pass, get entity value from optional, set updated properties from DTO to entity.
-     * Step 05: Save the entity by calling dao layer.
-     * Step 06: map/convert saved entity to DTO and return.
+     * <b><i>[Steps to help you, it's not recommended to write that much of unnecessary details in method document/comment]</i></b><br/><br/>
+     *
+     * <b>Step 01:</b> if argument studentId is null, throw exception.<br/>
+     * <b>Step 02:</b> if requested studentId in update request dto already assigned to another student, throw exception as we can't use it further.<br/>
+     * <b>Step 03:</b> if step 01 & 02 pass, we can proceed to update the student info. first get the entity with studentId from dao layer, if not found throw exception.<br/>
+     * <b>Step 04:</b> if step 03 pass, get entity value from optional, set updated properties from DTO to entity.<br/>
+     * <b>Step 05:</b> Save the entity by calling dao layer.<br/>
+     * <b>Step 06:</b> map/convert saved entity to DTO and return.
      */
     @Override
     public Student update(String studentId, Student request) {
