@@ -18,10 +18,10 @@ public interface StudentService {
     Student save(Student request);
 
     /**
-     * @param id of the student
+     * @param studentId unique for every student, given by the organization
      * @return student DTO
      */
-    Student get(Long id);
+    Student get(String studentId);
 
     /**
      * @return list of all student DTO
@@ -29,14 +29,14 @@ public interface StudentService {
     List<Student> getList();
 
     /**
-     * @param id      of the student to update info
-     * @param request info to update
+     * @param studentId of the student to update info
+     * @param request   info to update
      * @return updated student DTO
      */
-    Student update(Long id, Student request);
+    Student update(String studentId, Student request);
 
     /**
-     * @param id of the student to delete
+     * @param studentId of the student to delete
      */
-    void delete(Long id);
+    void delete(String studentId);
 }

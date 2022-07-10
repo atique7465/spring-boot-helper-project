@@ -21,16 +21,15 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class Student {
 
-    @NotNull(message = "Student ID can't ne null.")
-    private Long id;
+    @NotNull(message = "StudentID can't ne null.")
+    @NotEmpty(message = "StudentID can't be empty.")
+    private String studentId;
 
     @NotNull(message = "Student name can't be null.")
     @NotEmpty(message = "Student name can't be empty.")
     private String name;
 
-    @NotNull
     private Gender gender;
 
-    @NotNull
     private Department department;
 }

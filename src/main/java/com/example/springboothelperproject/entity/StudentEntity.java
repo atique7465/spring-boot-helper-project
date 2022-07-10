@@ -26,6 +26,9 @@ public class StudentEntity {
     @Column(name = "ID", nullable = false)
     private Long id;
 
+    @Column(name = "STUDENT_ID", nullable = false)
+    private String studentId;
+
     @Column(name = "NAME", nullable = false)
     private String name;
 

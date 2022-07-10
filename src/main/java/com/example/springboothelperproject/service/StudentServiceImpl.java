@@ -6,6 +6,7 @@ import com.example.springboothelperproject.dto.Student;
 import com.sun.jdi.request.InvalidRequestStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.el.PropertyNotFoundException;
 import java.util.ArrayList;
@@ -28,9 +29,9 @@ public class StudentServiceImpl implements StudentService {
 
         //check if the student already exist. if exist throw exception.
         //get entity from dao layer
-        Optional<StudentEntity> existingEntity = studentDao.get(request.getId());
+        Optional<StudentEntity> existingEntity = studentDao.getByStudentId(request.getStudentId());
         if (existingEntity.isPresent()) {
-            throw new IllegalArgumentException("Student already exist in database with id: " + request.getId());
+            throw new IllegalArgumentException("Student already exist in database with studentId: " + request.getStudentId());
         }
 
         //as student entity does not exist, we can save the info to database via JPA
@@ -47,7 +48,7 @@ public class StudentServiceImpl implements StudentService {
     private Student getDtoFromEntity(StudentEntity entity) {
 
         return Student.builder()
-                .id(entity.getId())
+                .studentId(entity.getStudentId())
                 .name(entity.getName())
                 .gender(entity.getGender())
                 .department(entity.getDepartment())
@@ -57,7 +58,7 @@ public class StudentServiceImpl implements StudentService {
     private StudentEntity getEntityFromDto(Student request) {
 
         return StudentEntity.builder()
-                .id(request.getId())
+                .studentId(request.getStudentId())
                 .name(request.getName())
                 .gender(request.getGender())
                 .department(request.getDepartment())
@@ -65,13 +66,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student get(Long id) {
+    public Student get(String studentId) {
 
         //get student entity from dao layer
-        Optional<StudentEntity> entity = studentDao.get(id);
+        Optional<StudentEntity> entity = studentDao.getByStudentId(studentId);
 
         if (entity.isEmpty()) {
-            throw new PropertyNotFoundException("Student not found with id: " + id);
+            throw new PropertyNotFoundException("Student not found with studentId: " + studentId);
         }
 
         //convert the entity to dto and return
@@ -95,43 +96,54 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student update(Long id, Student request) {
+    public Student update(String studentId, Student request) {
 
         //check request validity
-        if (id.compareTo(request.getId()) != 0) {
-            throw new InvalidRequestStateException("Requested ID and Student ID mismatch");
+        if (!StringUtils.hasLength(studentId)) {
+            throw new InvalidRequestStateException("studentId can't be null or empty");
         }
 
+        //if requested studentId in update request dto already assigned to another student, we can't use it further.
+        if (!studentId.equals(request.getStudentId())) {
+            Optional<StudentEntity> requestedStudentIdEntity = studentDao.getByStudentId(request.getStudentId());
+            if (requestedStudentIdEntity.isPresent()) {
+                throw new InvalidRequestStateException("Requested studentId : " + request.getStudentId() + " in update request dto is already assigned to another student.");
+            }
+        }
+
+        //request is valid, proceed to update
         //get student entity from dao layer
-        Optional<StudentEntity> existingEntity = studentDao.get(id);
+        Optional<StudentEntity> existingEntity = studentDao.getByStudentId(studentId);
         if (existingEntity.isEmpty()) {
-            throw new PropertyNotFoundException("Student not found to update with id: " + id);
+            throw new PropertyNotFoundException("Student not found to update with studentId: " + studentId);
         }
 
-        StudentEntity entity = existingEntity.get();
+        //get entity value from Optional
+        StudentEntity entityToUpdate = existingEntity.get();
 
         //as student exist in database, set updated values to the existing entity properties
-        entity.setName(request.getName());
-        entity.setGender(request.getGender());
-        entity.setDepartment(request.getDepartment());
+        entityToUpdate.setStudentId(request.getStudentId());
+        entityToUpdate.setName(request.getName());
+        entityToUpdate.setGender(request.getGender());
+        entityToUpdate.setDepartment(request.getDepartment());
 
         //save the changes in database
-        entity = studentDao.save(entity);
+        entityToUpdate = studentDao.save(entityToUpdate);
 
         //convert the entity to dto and return
-        return getDtoFromEntity(entity);
+        return getDtoFromEntity(entityToUpdate);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(String studentId) {
 
         //get student entity from dao layer
-        Optional<StudentEntity> existingEntity = studentDao.get(id);
+        Optional<StudentEntity> existingEntity = studentDao.getByStudentId(studentId);
         if (existingEntity.isEmpty()) {
-            throw new PropertyNotFoundException("Student not found to delete with id: " + id);
+            throw new PropertyNotFoundException("Student not found to delete with studentId: " + studentId);
         }
 
         //as student exist in database, delete it
-        studentDao.delete(id);
+        studentDao.deleteByStudentId(studentId);
     }
 }

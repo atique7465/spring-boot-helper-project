@@ -19,10 +19,10 @@ public interface StudentDao {
     StudentEntity save(StudentEntity entity);
 
     /**
-     * @param id of the student entity
+     * @param studentId of the entity
      * @return student entity
      */
-    Optional<StudentEntity> get(Long id);
+    Optional<StudentEntity> getByStudentId(String studentId);
 
     /**
      * @return list of all student entities
@@ -30,7 +30,7 @@ public interface StudentDao {
     List<StudentEntity> getList();
 
     /**
-     * @param id of the student entity to be deleted
+     * @param studentId of the entity to be deleted
      */
-    void delete(Long id);
+    void deleteByStudentId(String studentId);
 }

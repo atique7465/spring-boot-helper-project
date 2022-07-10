@@ -30,18 +30,18 @@ public class StudentInfoController {
         return studentService.getList();
     }
 
-    @GetMapping(value = "/{id}")
-    public Student getStudent(@PathVariable Long id) {
-        return studentService.get(id);
+    @GetMapping(value = "/{studentId}")
+    public Student getStudent(@PathVariable String studentId) {
+        return studentService.get(studentId);
     }
 
-    @PutMapping(value = "/{id}")
-    public Student updateStudent(@PathVariable Long id, @RequestBody @Validated Student request) {
-        return studentService.update(id, request);
+    @PutMapping(value = "/{studentId}")
+    public Student updateStudent(@PathVariable String studentId, @RequestBody @Validated Student request) {
+        return studentService.update(studentId, request);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void deleteStudent(@PathVariable Long id) {
-        studentService.delete(id);
+    @DeleteMapping(value = "/{studentId}")
+    public void deleteStudent(@PathVariable String studentId) {
+        studentService.delete(studentId);
     }
 }

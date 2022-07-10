@@ -25,8 +25,8 @@ public class StudentDaoImpl implements StudentDao {
     }
 
     @Override
-    public Optional<StudentEntity> get(Long id) {
-        return studentRepository.findById(id);
+    public Optional<StudentEntity> getByStudentId(String studentId) {
+        return studentRepository.findByStudentId(studentId);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class StudentDaoImpl implements StudentDao {
     }
 
     @Override
-    public void delete(Long id) {
-        studentRepository.deleteById(id);
+    public void deleteByStudentId(String studentId) {
+        studentRepository.deleteByStudentId(studentId);
     }
 }
