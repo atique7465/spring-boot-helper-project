@@ -23,27 +23,36 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentDao studentDao;
 
+    /**
+     * <b><i>[Steps to help you, it's not recommended to write that much of unnecessary details in method document/comment]</i></b><br/><br/>
+     *
+     * <b>Step 01:</b> check if the student already exist with same id, if exist throw exception.<br/>
+     * <b>Step 02:</b> if step 01 pass, we can proceed to save the student info. first map/convert the DTO to JPA entity<br/>
+     * <b>Step 03:</b> Save the entity by calling dao layer<br/>
+     * <b>Step 04:</b> map/convert saved entity to DTO and return
+     */
     @Override
     public Student save(Student request) {
 
-        //check if the student already exist. if exist throw exception.
-        //get entity from dao layer
+        //Step 01
         Optional<StudentEntity> existingEntity = studentDao.get(request.getId());
         if (existingEntity.isPresent()) {
             throw new IllegalArgumentException("Student already exist in database with id: " + request.getId());
         }
 
-        //as student entity does not exist, we can save the info to database via JPA
-        //first covert student dto to jpa entity
+        //Step 02
         StudentEntity newEntity = getEntityFromDto(request);
 
-        //save the entity
+        //Step 03
         newEntity = studentDao.save(newEntity);
 
-        //convert the entity to dto and return
+        //Step 04
         return getDtoFromEntity(newEntity);
     }
 
+    /**
+     * Entity to DTO Mapper using Student builder
+     */
     private Student getDtoFromEntity(StudentEntity entity) {
 
         return Student.builder()
@@ -54,6 +63,9 @@ public class StudentServiceImpl implements StudentService {
                 .build();
     }
 
+    /**
+     * DTO to Entity Mapper using StudentEntity builder
+     */
     private StudentEntity getEntityFromDto(Student request) {
 
         return StudentEntity.builder()
@@ -64,74 +76,90 @@ public class StudentServiceImpl implements StudentService {
                 .build();
     }
 
+    /**
+     * <b><i>[Steps to help you, it's not recommended to write that much of unnecessary details in method document/comment]</i></b><br/><br/>
+     *
+     * <b>Step 01:</b> get student entity from dao layer with id<br/>
+     * <b>Step 02:</b> if entity is null, throw exception that the queried student not found in database<br/>
+     * <b>Step 03:</b> if step 02 pass, that means student found in database, map/convert found entity to DTO and return
+     */
     @Override
     public Student get(Long id) {
 
-        //get student entity from dao layer
+        //Step 01
         Optional<StudentEntity> entity = studentDao.get(id);
 
+        //Step 02
         if (entity.isEmpty()) {
             throw new PropertyNotFoundException("Student not found with id: " + id);
         }
 
-        //convert the entity to dto and return
+        //Step 03
         return getDtoFromEntity(entity.get());
     }
 
+    /**
+     * <b><i>[Steps to help you, it's not recommended to write that much of unnecessary details in method document/comment]</i></b><br/><br/>
+     *
+     * <b>Step 01:</b> get all student entities from dao layer<br/>
+     * <b>Step 02:</b> map/convert entities to DTO and save to result<br/>
+     * <b>Step 03:</b> return result
+     */
     @Override
     public List<Student> getList() {
 
         List<Student> result = new ArrayList<>();
 
-        //get student entities fro dao layer
+        //Step 01
         List<StudentEntity> entities = studentDao.getList();
 
-        //convert all entities to dto and store in result
+        //Step 02
         for (StudentEntity entity : entities) {
             result.add(getDtoFromEntity(entity));
         }
 
+        //Step 03
         return result;
     }
 
+    /**
+     * <b><i>[Steps to help you, it's not recommended to write that much of unnecessary details in method document/comment]</i></b><br/><br/>
+     *
+     * <b>Step 01:</b> if argument id is mismatch with request DTO id, throw invalid request exception.<br/>
+     * <b>Step 02:</b> if step 01 pass, we can proceed to update the student info. first get the entity with id from dao layer, if not found throw exception.<br/>
+     * <b>Step 03:</b> if step 02 pass, get entity value from optional, set updated properties from DTO to entity.<br/>
+     * <b>Step 04:</b> Save the entity by calling dao layer.<br/>
+     * <b>Step 05:</b> map/convert saved entity to DTO and return.
+     */
     @Override
     public Student update(Long id, Student request) {
 
-        //check request validity
+        //Step 01
         if (id.compareTo(request.getId()) != 0) {
             throw new InvalidRequestStateException("Requested ID and Student ID mismatch");
         }
 
-        //get student entity from dao layer
+        //Step 02
         Optional<StudentEntity> existingEntity = studentDao.get(id);
         if (existingEntity.isEmpty()) {
             throw new PropertyNotFoundException("Student not found to update with id: " + id);
         }
 
+        //Step 03
         StudentEntity entity = existingEntity.get();
-
-        //as student exist in database, set updated values to the existing entity properties
         entity.setName(request.getName());
         entity.setGender(request.getGender());
         entity.setDepartment(request.getDepartment());
 
-        //save the changes in database
+        //Step 04
         entity = studentDao.save(entity);
 
-        //convert the entity to dto and return
+        //Steo 05
         return getDtoFromEntity(entity);
     }
 
     @Override
     public void delete(Long id) {
-
-        //get student entity from dao layer
-        Optional<StudentEntity> existingEntity = studentDao.get(id);
-        if (existingEntity.isEmpty()) {
-            throw new PropertyNotFoundException("Student not found to delete with id: " + id);
-        }
-
-        //as student exist in database, delete it
         studentDao.delete(id);
     }
 }
