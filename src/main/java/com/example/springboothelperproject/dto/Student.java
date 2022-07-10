@@ -29,7 +29,9 @@ public class Student {
     @NotEmpty(message = "Student name can't be empty.")
     private String name;
 
+    @NotNull
     private Gender gender;
 
+    @NotNull
     private Department department;
 }

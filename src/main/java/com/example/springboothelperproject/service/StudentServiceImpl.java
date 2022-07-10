@@ -45,6 +45,9 @@ public class StudentServiceImpl implements StudentService {
         return getDtoFromEntity(newEntity);
     }
 
+    /**
+     * Entity to DTO Mapper
+     */
     private Student getDtoFromEntity(StudentEntity entity) {
 
         return Student.builder()
@@ -55,6 +58,9 @@ public class StudentServiceImpl implements StudentService {
                 .build();
     }
 
+    /**
+     * DTO to Entity Mapper
+     */
     private StudentEntity getEntityFromDto(Student request) {
 
         return StudentEntity.builder()
