@@ -9,3 +9,4 @@ Course link: https://github.com/atique7465/spring-boot-orm-hibernate-jpa-course
 2. Only 2 layer architecture is used. [Controller --> Service]
 ![](src/main/resources/image/2 Layer Spring Boot Application.png)
 3. An in-class HashMap is used in service layer to act as database.
+4. Postman collection kep in "_documents_" directory.
