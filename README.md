@@ -13,7 +13,7 @@ Course link: https://github.com/atique7465/spring-boot-orm-hibernate-jpa-course
 5. MySQL driver dependency added in **_build.gradle_** file.
 6. You need to create the database manually, to do so first Log in to the **"root"** user in MySQL Workbench.
 ![](src/main/resources/image/mysql-01.png)
-7. Create **"studentinfo"** database in MySQL Workbench query console (query kept in **_/dbconfig/v1_create_studentinfo_user.sql_** file). **"studentinfo"** database will appear in left side Navigation panel. Press refresh button in case database not appear. 
+7. Create **"studentinfo"** database in MySQL Workbench query console (query kept in **_/dbconfig/v1_create_studentinfo_scheme.sql_** file). **"studentinfo"** database will appear in left side Navigation panel. Press refresh button in case database not appear. 
 ![](src/main/resources/image/mysql-02.png)
 8. Run the Application, it will automatically create required tables in **"studentinfo"** database.
 9. Hit **_POST localhost:8085/helper-project-1.0/api/v1/student_** with proper request, see data in student table.
