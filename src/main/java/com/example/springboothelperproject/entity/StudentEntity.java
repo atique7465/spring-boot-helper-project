@@ -2,22 +2,22 @@ package com.example.springboothelperproject.entity;
 
 import com.example.springboothelperproject.enums.Department;
 import com.example.springboothelperproject.enums.Gender;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author atiQue
  * @since 09'Jul 2022 at 5:36 PM
  */
 
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
 @Entity
 @Table(name = "STUDENT_V2")
@@ -41,6 +41,10 @@ public class StudentEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "DEPARTMENT", nullable = false)
     private Department department;
+
+    @OneToMany(mappedBy = "studentEntity", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JsonManagedReference
+    private List<BookEntity> bookEntities;
 
     @Column(name = "CREATED", nullable = false)
     private Date created;

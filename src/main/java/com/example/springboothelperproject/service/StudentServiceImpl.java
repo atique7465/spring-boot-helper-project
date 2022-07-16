@@ -25,6 +25,13 @@ public class StudentServiceImpl implements StudentService {
     private StudentDao studentDao;
 
     /**
+     * as utility methods increased, we tried to separate them in another service<br>
+     * from this business layer for better code maintainability
+     */
+    @Autowired
+    private StudentHelperService helperService;
+
+    /**
      * <b><i>[Steps to help you, it's not recommended to write that much of unnecessary details in method document/comment]</i></b><br/><br/>
      *
      * <b>Step 01:</b> check if the student already exist with same studentId. if exist throw exception.<br/>
@@ -42,39 +49,13 @@ public class StudentServiceImpl implements StudentService {
         }
 
         //Step 02
-        StudentEntity newEntity = getEntityFromDto(request);
+        StudentEntity newEntity = helperService.getStudentEntityFromStudent(request);
 
         //Step 03
         newEntity = studentDao.save(newEntity);
 
         //Step 04
-        return getDtoFromEntity(newEntity);
-    }
-
-    /**
-     * Entity to DTO Mapper using Student builder
-     */
-    private Student getDtoFromEntity(StudentEntity entity) {
-
-        return Student.builder()
-                .studentId(entity.getStudentId())
-                .name(entity.getName())
-                .gender(entity.getGender())
-                .department(entity.getDepartment())
-                .build();
-    }
-
-    /**
-     * DTO to Entity Mapper using StudentEntity builder
-     */
-    private StudentEntity getEntityFromDto(Student request) {
-
-        return StudentEntity.builder()
-                .studentId(request.getStudentId())
-                .name(request.getName())
-                .gender(request.getGender())
-                .department(request.getDepartment())
-                .build();
+        return helperService.getStudentFromEntity(newEntity);
     }
 
     /**
@@ -96,7 +77,7 @@ public class StudentServiceImpl implements StudentService {
         }
 
         //Step 03
-        return getDtoFromEntity(entity.get());
+        return helperService.getStudentFromEntity(entity.get());
     }
 
     /**
@@ -116,7 +97,7 @@ public class StudentServiceImpl implements StudentService {
 
         //Step 02
         for (StudentEntity entity : entities) {
-            result.add(getDtoFromEntity(entity));
+            result.add(helperService.getStudentFromEntity(entity));
         }
 
         //Step 03
@@ -163,15 +144,35 @@ public class StudentServiceImpl implements StudentService {
         entityToUpdate.setGender(request.getGender());
         entityToUpdate.setDepartment(request.getDepartment());
 
+        entityToUpdate.getBookEntities().clear();
+        entityToUpdate.getBookEntities().addAll(helperService.getBookEntitiesFromBooks(entityToUpdate, request.getBooks()));
+
         //Step 05
         entityToUpdate = studentDao.save(entityToUpdate);
 
         //Step 06
-        return getDtoFromEntity(entityToUpdate);
+        return helperService.getStudentFromEntity(entityToUpdate);
     }
 
+    /**
+     * <b><i>[Steps to help you, it's not recommended to write that much of unnecessary details in method document/comment]</i></b><br/><br/>
+     *
+     * <b>Step 01:</b> get student entity from dao layer<br/>
+     * <b>Step 02:</b> if entity is null, throw exception that the student to delete not found in database<br/>
+     * <b>Step 03:</b> if step 02 pass, that means student found in database, call dao layer to delete by id
+     */
     @Override
     public void delete(String studentId) {
-        studentDao.deleteByStudentId(studentId);
+
+        //Step 01
+        Optional<StudentEntity> existingEntity = studentDao.getByStudentId(studentId);
+
+        //Step 02
+        if (existingEntity.isEmpty()) {
+            throw new PropertyNotFoundException("Student not found to delete with studentId: " + studentId);
+        }
+
+        //Step 02
+        studentDao.deleteById(existingEntity.get().getId());
     }
 }

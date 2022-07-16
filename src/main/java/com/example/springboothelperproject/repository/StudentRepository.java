@@ -12,9 +12,7 @@ import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
 
-    //These are Derived Query Methods, ref: https://www.baeldung.com/spring-data-derived-queries
+    //This is a Derived Query Method, ref: https://www.baeldung.com/spring-data-derived-queries
 
     Optional<StudentEntity> findByStudentId(String StudentEntity);
-
-    void deleteByStudentId(String StudentEntity);
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author atiQue
@@ -34,4 +35,7 @@ public class Student {
 
     @NotNull
     private Department department;
+
+    @NotNull
+    private List<Book> books;
 }

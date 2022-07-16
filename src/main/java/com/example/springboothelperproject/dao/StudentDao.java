@@ -30,7 +30,7 @@ public interface StudentDao {
     List<StudentEntity> getList();
 
     /**
-     * @param studentId of the entity to be deleted
+     * @param id of the entity to be deleted
      */
-    void deleteByStudentId(String studentId);
+    void deleteById(Long id);
 }

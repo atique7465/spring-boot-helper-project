@@ -35,7 +35,7 @@ public class StudentDaoImpl implements StudentDao {
     }
 
     @Override
-    public void deleteByStudentId(String studentId) {
-        studentRepository.deleteByStudentId(studentId);
+    public void deleteById(Long id) {
+        studentRepository.deleteById(id);
     }
 }
